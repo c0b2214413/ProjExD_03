@@ -88,6 +88,7 @@ class Bird:
         screen.blit(self._img, self._rct)
 
 
+
 class Bomb:
     """
     爆弾に関するクラス
@@ -140,12 +141,35 @@ class Beam:
         self._rct.move_ip(self._vx, self._vy)
         screen.blit(self._img, self._rct)
 
+class Exposion:
+    """
+    爆発に関するクラス
+    """
+    def __init__(self,):
+        self._img =pg.transform.rotozoom(pg.image.load(f"ex03/fig/explosion.gif"), 0, 2.0)  # 画像
+        self._imgs = [self._img, pg.transform.flip(self._img, True, False),  pg.transform.flip(self._img, False, False),
+              pg.transform.flip(self._img, False, True) ] # 画像の上下左右を含むリスト
+        self._rct.center = self._rct.center
+        self._life = 50  # 爆発の表示時間
+    def update(self, screen: pg.Surface):
+        """
+        爆発の画像の切り替え
+        """
+        screen.blit(self._imgs)
+
+        
+    
 
 def main():
     pg.display.set_caption("たたかえ！こうかとん")
     screen = pg.display.set_mode((WIDTH, HEIGHT))
     clock = pg.time.Clock()
     bg_img = pg.image.load("ex03/fig/pg_bg.jpg")
+    score = 0
+    text = pg.font.SysFont(None,40) 
+    text1 = text.render(f"{score}点", True, (255,0,0))
+    
+
 
     bird = Bird(3, (900, 400))
     bombs = [Bomb() for _ in range(NUM_OF_BOMBS)]
@@ -153,6 +177,7 @@ def main():
 
     tmr = 0
     while True:
+        screen.blit(text1, (1500, 200))
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 return
@@ -167,9 +192,12 @@ def main():
             if bird._rct.colliderect(bomb._rct):
                 # ゲームオーバー時に、こうかとん画像を切り替え、1秒館員表示させる
                 bird.change_img(8, screen)
+                exposion = [Exposion() for _ in range(3)]
                 pg.display.update()
                 time.sleep(1)
                 return
+        
+
 
         key_lst = pg.key.get_pressed()
         bird.update(key_lst, screen)                                            
@@ -180,6 +208,7 @@ def main():
                     beam = None
                     del bombs[i]
                     bird.change_img(6, screen)
+                    score += 1
                     break
 
         pg.display.update()
