@@ -118,7 +118,7 @@ class Beam:
         self._rct.left = bird._rct.right  # こうかとんの右側にビームの左側を合わせる
         self._rct.centery = bird._rct.right
         self._vx, self._vy = +1, 0
-
+ 
     def update(self, screen: pg.Surface):
         """
         ビームを速度self._vyに基づき移動させる
@@ -172,6 +172,8 @@ def main():
             if bomb is not None and beam._rct.colliderect(bomb._rct):
                 beam = None
                 bomb = None
+                bird.change_img(6, screen)
+                
         pg.display.update()
         clock.tick(1000)
 
