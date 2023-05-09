@@ -145,7 +145,7 @@ class Exposion:
     """
     爆発に関するクラス
     """
-    def __init__(self,):
+    def __init__(self):
         self._img =pg.transform.rotozoom(pg.image.load(f"ex03/fig/explosion.gif"), 0, 2.0)  # 画像
         self._imgs = [self._img, pg.transform.flip(self._img, True, False),  pg.transform.flip(self._img, False, False),
               pg.transform.flip(self._img, False, True) ] # 画像の上下左右を含むリスト
